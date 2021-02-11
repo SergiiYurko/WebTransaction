@@ -4,6 +4,7 @@ namespace WebTransaction.DataAccess.Interfaces
 {
     public interface IUnitOfWork
     {
-        IRepository<FileInfo> FileInfoRepository { get;}
+        IRepository<Transaction> TransactionRepository { get;}
+        void SaveChanges();
     }
 }

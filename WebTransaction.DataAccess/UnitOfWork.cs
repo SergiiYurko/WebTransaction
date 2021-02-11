@@ -6,14 +6,19 @@ namespace WebTransaction.DataAccess
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private IRepository<FileInfo> _fileInfoRepository;
+        private IRepository<Transaction> _transactionRepository;
         private readonly DataContext _dbContext;
 
         public UnitOfWork(DataContext dbContext)
         {
             _dbContext = dbContext;
         }
-        public IRepository<FileInfo> FileInfoRepository => _fileInfoRepository ??= new Repository<FileInfo>(_dbContext);
+        public IRepository<Transaction> TransactionRepository => _transactionRepository??= new Repository<Transaction>(_dbContext);
+       
+        public void SaveChanges()
+        {
+            _dbContext.SaveChanges();
+        }
 
         private bool _disposed;
         public virtual void Dispose(bool disposing)
