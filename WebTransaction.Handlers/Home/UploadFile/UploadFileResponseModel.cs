@@ -2,6 +2,6 @@
 {
     public class UploadFileResponseModel
     {
-        public byte [] Content { get; set; }
+
     }
 }
