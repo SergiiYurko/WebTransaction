@@ -1,7 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebTransaction.Handlers.Home.GetTransactionsBy;
+using WebTransaction.Handlers.Home.GetTransactionsBy.GetTransactionsByCurrency;
+using WebTransaction.Handlers.Home.GetTransactionsBy.GetTransactionsByDateRange;
+using WebTransaction.Handlers.Home.GetTransactionsBy.GetTransactionsByStatus;
 using WebTransaction.Handlers.Home.UploadFile;
 
 namespace WebTransaction.Controllers
@@ -17,10 +22,38 @@ namespace WebTransaction.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("upload")]
         public async Task<ActionResult<UploadFileResponseModel>> UploadFile(IFormFile model)
         {
-            return await _mediator.Send(new UploadFileRequestModel{File = model});
+            var validator = new UploadFileValidator();
+            var result = await validator.ValidateAsync(model);
+            if (!result.IsValid)
+                return BadRequest(result.Errors);
+
+            await _mediator.Send(new UploadFileRequestModel{File = model});
+
+            return Ok();
+        }
+
+        [HttpGet("transactions/currency")]
+        public async Task<ActionResult<List<GetTransactionsByModelResponse>>> GetTransactionsByCurrency([FromQuery]
+            GetTransactionsByCurrencyModelRequest model)
+        {
+            return await _mediator.Send(model);
+        }
+
+        [HttpGet("transactions/dateRange")]
+        public async Task<ActionResult<List<GetTransactionsByModelResponse>>> GetTransactionsByDateRange([FromQuery]
+            GetTransactionsByDateRangeModelRequest model)
+        {
+            return await _mediator.Send(model);
+        }
+
+        [HttpGet("transactions/status")]
+        public async Task<ActionResult<List<GetTransactionsByModelResponse>>> GetTransactionsByStatus(
+            [FromQuery] GetTransactionsByStatusModelRequest model)
+        {
+            return await _mediator.Send(model);
         }
     }
 }

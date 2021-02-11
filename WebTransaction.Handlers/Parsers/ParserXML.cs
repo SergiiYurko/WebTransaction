@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
-using Microsoft.AspNetCore.Http;
 using WebTransaction.Domain.Models;
 using WebTransaction.Handlers.DTO;
 
@@ -16,6 +16,7 @@ namespace WebTransaction.Handlers.Parsers
             using (var reader = new StreamReader(file.OpenReadStream()))
             {
                 var doc = XDocument.Load(reader);
+
                 foreach (var transaction in doc.Element("Transactions").Elements("Transaction"))
                 {
                     var fileInfo = new FileInfoDTO
@@ -34,7 +35,7 @@ namespace WebTransaction.Handlers.Parsers
                         "Done" => StatusTransaction.Done,
                         _ => fileInfo.Status
                     };
-                    
+
                     fileInfos.Add(fileInfo);
                 }
             }

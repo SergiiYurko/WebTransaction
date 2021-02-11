@@ -28,7 +28,7 @@ namespace WebTransaction.Handlers.Home.UploadFile
             var fileInfoList = _parser.Parse(request.File); 
             _mapper.Map<List<Transaction>>(fileInfoList).ForEach(transaction => _unitOfWork.TransactionRepository.Create(transaction));
             _unitOfWork.SaveChanges();
-            return new UploadFileResponseModel {Content = await request.File.GetBytes()};
+            return new UploadFileResponseModel();
         }
     }
 }

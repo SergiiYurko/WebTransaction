@@ -48,6 +48,5 @@ namespace WebTransaction.DataAccess
         {
             _dbContext.Entry(item).State = EntityState.Modified;
         }
-
     }
 }
