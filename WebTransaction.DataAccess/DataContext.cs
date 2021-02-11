@@ -5,7 +5,7 @@ namespace WebTransaction.DataAccess
 {
     public sealed class DataContext: DbContext
     {
-        public DbSet<FileInfo> FileInfos { get; set; }
+        public DbSet<Transaction> FileInfos { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
