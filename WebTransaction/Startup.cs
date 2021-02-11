@@ -52,6 +52,14 @@ namespace WebTransaction
             services.AddAutoMapper(cfg => cfg.AddProfile(typeof(MapperConfiguration)));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IParser, Parser>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +76,8 @@ namespace WebTransaction
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("EnableCORS");
 
             app.UseAuthorization();
 
