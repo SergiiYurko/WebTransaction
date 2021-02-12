@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using FluentValidation.AspNetCore;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,9 +14,9 @@ using Microsoft.Extensions.Logging;
 using WebTransaction.DataAccess;
 using WebTransaction.DataAccess.Interfaces;
 using WebTransaction.Handlers.Helpers;
-using WebTransaction.Handlers.Home.UploadFile;
 using WebTransaction.Handlers.Interfaces;
 using WebTransaction.Handlers.Parsers;
+using WebTransaction.Middleware;
 
 namespace WebTransaction
 {
@@ -33,14 +33,8 @@ namespace WebTransaction
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
-            services.AddMvc(opt =>
-            {
-                opt.Filters.Add(typeof(ValidationFilter));
-            }).AddFluentValidation(op =>
-            {
-                op.RegisterValidatorsFromAssemblyContaining<UploadFileValidator>();
-            });
+            services.AddValidatorsFromAssembly(Assembly.Load("WebTransaction.Handlers"));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
             services.AddSwaggerGen(c =>
             {
@@ -72,6 +66,8 @@ namespace WebTransaction
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebTransaction v1"));
             }
+
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             app.UseHttpsRedirection();
 
