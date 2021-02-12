@@ -23,14 +23,14 @@ namespace WebTransaction.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task<ActionResult<UploadFileResponseModel>> UploadFile(IFormFile model)
+        public async Task<ActionResult<UploadFileResponseModel>> UploadFile([FromForm]UploadFileRequestModel model)
         {
-            var validator = new UploadFileValidator();
+            /*var validator = new UploadFileValidator();
             var result = await validator.ValidateAsync(model);
             if (!result.IsValid)
-                return BadRequest(result.Errors);
+                return BadRequest(result.Errors);*/
 
-            await _mediator.Send(new UploadFileRequestModel{File = model});
+            await _mediator.Send(model);
 
             return Ok();
         }
