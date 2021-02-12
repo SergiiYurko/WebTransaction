@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using WebTransaction.Handlers.Helpers;
 using WebTransaction.Handlers.Home.GetTransactionsBy;
 using WebTransaction.Handlers.Home.GetTransactionsBy.GetTransactionsByCurrency;
 using WebTransaction.Handlers.Home.GetTransactionsBy.GetTransactionsByDateRange;
