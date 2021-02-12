@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebTransaction.Handlers.Helpers;
 using WebTransaction.Handlers.Home.GetTransactionsBy;
 using WebTransaction.Handlers.Home.GetTransactionsBy.GetTransactionsByCurrency;
 using WebTransaction.Handlers.Home.GetTransactionsBy.GetTransactionsByDateRange;
@@ -23,15 +24,9 @@ namespace WebTransaction.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task<ActionResult<UploadFileResponseModel>> UploadFile([FromForm]UploadFileRequestModel model)
+        public async Task<ActionResult<UploadFileResponseModel>> UploadFile([FromForm] UploadFileRequestModel model)
         {
-            /*var validator = new UploadFileValidator();
-            var result = await validator.ValidateAsync(model);
-            if (!result.IsValid)
-                return BadRequest(result.Errors);*/
-
             await _mediator.Send(model);
-
             return Ok();
         }
 
