@@ -30,7 +30,9 @@ export class UploadComponent implements OnInit {
   
     this.http.post('https://localhost:44319/api/Home/upload', formData)
     .subscribe(res => {
-      alert('Uploaded!!');
+      alert('Uploaded successfully!');
+    }, error => {
+      alert(error.error);
     });
   }
 }
