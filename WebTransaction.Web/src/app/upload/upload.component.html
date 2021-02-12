@@ -1,0 +1,9 @@
+<form [formGroup]="uploadForm" (ngSubmit)="onSubmit(uploadForm.value)">
+
+  <div>
+      <input type="file" formControlName="TileImage" (change)="onSelectFile($event)" >
+  </div>
+
+  <button type="submit">Upload file</button>
+
+</form>
